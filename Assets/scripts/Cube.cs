@@ -15,7 +15,7 @@ public class Cube : MonoBehaviour
 
     private bool _collisionHappened;
 
-    public event Action<Cube> IsDied;
+    public event Action<Cube> Died;
 
     private void Awake()
     {
@@ -31,13 +31,13 @@ public class Cube : MonoBehaviour
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.TryGetComponent<Platform>(out Platform platform) && _collisionHappened == false)
+        if (_collisionHappened == false && collision.gameObject.TryGetComponent<Platform>(out Platform platform))
         {
             _collisionHappened = true;
 
             _renderer.material.color = new Color(Random.value, Random.value, Random.value);
 
-            StartCoroutine(nameof(LifeCountDown));
+            StartCoroutine(LifeCountDown());
         }
     }
 
@@ -45,6 +45,6 @@ public class Cube : MonoBehaviour
     {
         yield return new WaitForSeconds(Random.Range(_minLifeDuration, _maxLifeDuration));
 
-        IsDied?.Invoke(this);
+        Died?.Invoke(this);
     }
 }

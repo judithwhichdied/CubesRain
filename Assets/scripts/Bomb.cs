@@ -1,4 +1,5 @@
 using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 using Random = UnityEngine.Random;
@@ -10,13 +11,12 @@ public class Bomb : MonoBehaviour
 
     private float _randomMinValue = 2f;
     private float _randomMaxValue = 5f;
-    private float _explosionRadius = 500f;
-    private float _explosionForce = 300f;
+    private float _explosionRadius = 200f;
+    private float _explosionForce = 200f;
     private float _step;
+    private float _timeCount;
 
-    private bool _coroutineEnabled = false;
-
-    public float TimeCount { get; private set; }
+    public event Action<Bomb> Destroyed;
 
     private void Awake()
     {
@@ -27,45 +27,32 @@ public class Bomb : MonoBehaviour
 
     public void StartTimer()
     {
-        StartCoroutine(nameof(ExplodeCountDown));
+        StartCoroutine(ExplodeCountDown());
     }
 
     private IEnumerator ExplodeCountDown()
     {
-        TimeCount = Random.Range(_randomMinValue, _randomMaxValue);
+        _timeCount = Random.Range(_randomMinValue, _randomMaxValue);
 
-        _step = 1 / TimeCount;
+        float currentTime = 0;
 
-        WaitForSeconds wait = new WaitForSeconds(1);
-
-        while(TimeCount > 0)
+        while (currentTime < _timeCount)
         {
-            StartCoroutine(AlphaScalling(TimeCount));
+            currentTime += Time.deltaTime;
 
-            TimeCount--;
+            _step = currentTime / _timeCount;
 
-            yield return wait;
-        }
-
-        Explode();
-        Destroy(gameObject);
-    }
-
-    private IEnumerator AlphaScalling(float time)
-    {
-        if (_coroutineEnabled)
-            yield break;
-
-        _coroutineEnabled = true;
-
-        while(time > 0)
-        {
-            _renderer.material.color = new Color(0, 0, 0, Mathf.MoveTowards(_renderer.material.color.a, 0, _step*Time.deltaTime));
+            _renderer.material.color = new Color
+                (0, 0, 0, Mathf.MoveTowards(_renderer.material.color.a, 0, _step * Time.deltaTime));
 
             yield return null;
         }
 
-        _coroutineEnabled = false;
+        Explode();
+
+        Destroyed?.Invoke(this);
+
+        _renderer.material.color = Color.black;
     }
 
     private List<Rigidbody> GetExplodableObjects()
@@ -90,7 +77,7 @@ public class Bomb : MonoBehaviour
         List<Rigidbody> cubes = GetExplodableObjects();
 
         foreach (Rigidbody explodableObject in cubes)
-        {            
+        {
             explodableObject.AddExplosionForce(_explosionForce, transform.position, _explosionRadius);
         }
     }

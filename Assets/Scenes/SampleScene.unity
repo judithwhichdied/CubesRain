@@ -1196,8 +1196,9 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 587032906}
-  - component: {fileID: 587032907}
   - component: {fileID: 587032908}
+  - component: {fileID: 587032910}
+  - component: {fileID: 587032909}
   m_Layer: 0
   m_Name: Spawner
   m_TagString: Untagged
@@ -1220,23 +1221,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &587032907
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 587032904}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 630d124d209c19f44ad89b3377069838, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  _spawnDelay: 1
-  _poolCapacity: 10
-  _poolMaxSize: 10
-  _cube: {fileID: 8650511383658939595, guid: 59831334238eda64ab9a4d64f0778397, type: 3}
-  _bomb: {fileID: -4742849268608871120, guid: d9b07a172a1a109499baa50c5038f90c, type: 3}
 --- !u!114 &587032908
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1251,6 +1235,42 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _bombInfo: {fileID: 1971501852}
   _cubeInfo: {fileID: 488532894}
+  _bombSpawner: {fileID: 587032909}
+  _cubeSpawner: {fileID: 587032910}
+--- !u!114 &587032909
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587032904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9ba2a2ba4fb34c749baf6fe03da2cd2c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnDelay: 1
+  _poolCapacity: 10
+  _poolMaxSize: 10
+  _object: {fileID: -4742849268608871120, guid: d9b07a172a1a109499baa50c5038f90c,
+    type: 3}
+  _cubeSpawner: {fileID: 587032910}
+--- !u!114 &587032910
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 587032904}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: db01ce9aecf71bc4cad017ec7829e052, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  _spawnDelay: 1
+  _poolCapacity: 10
+  _poolMaxSize: 10
+  _object: {fileID: 8650511383658939595, guid: 59831334238eda64ab9a4d64f0778397, type: 3}
 --- !u!1 &618312540
 GameObject:
   m_ObjectHideFlags: 0

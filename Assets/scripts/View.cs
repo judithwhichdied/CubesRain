@@ -1,34 +1,33 @@
 using TMPro;
 using UnityEngine;
 
-[RequireComponent(typeof(Spawner))]
 public class View : MonoBehaviour
 {
     [SerializeField] private TextMeshProUGUI _bombInfo;
     [SerializeField] private TextMeshProUGUI _cubeInfo;
 
-    private Spawner _spawner;
-
-    private void Awake()
-    {
-        _spawner = GetComponent<Spawner>();
-    }
+    [SerializeField] private BombSpawner _bombSpawner;
+    [SerializeField] private CubeSpawner _cubeSpawner;
 
     private void OnEnable()
     {
-        _spawner.BombSpawned += DrawInfo;
-        _spawner.CubeSpawned += DrawInfo;
+        _bombSpawner.Spawned += DrawInfo;
+        _cubeSpawner.Spawned += DrawInfo;
+        _bombSpawner.ActiveObjectsCountChanged += DrawInfo;
+        _cubeSpawner.ActiveObjectsCountChanged += DrawInfo;
     }
 
     private void OnDisable()
     {
-        _spawner.BombSpawned -= DrawInfo;
-        _spawner.CubeSpawned -= DrawInfo;
+        _bombSpawner.Spawned -= DrawInfo;
+        _cubeSpawner.Spawned -= DrawInfo;
+        _bombSpawner.ActiveObjectsCountChanged -= DrawInfo;
+        _cubeSpawner.ActiveObjectsCountChanged-= DrawInfo;
     }
 
     private void DrawInfo()
     {
-        _bombInfo.text = $"бомб: создано {_spawner.BombsCount}\n активно {_spawner.BombsActiveCount}";
-        _cubeInfo.text = $"кубов: создано {_spawner.CubesCount}\n активно {_spawner.Pool.CountActive}";
+        _bombInfo.text = $"бомб: заспавнено {_bombSpawner.ObjectsCount}\n активно {_bombSpawner.GetPoolCountActive()}\n создано {_bombSpawner.ObjectsCount + _bombSpawner.GetPoolCountAll()}";
+        _cubeInfo.text = $"кубов: заспавнено {_cubeSpawner.ObjectsCount}\n активно {_cubeSpawner.GetPoolCountActive()}\n создано {_cubeSpawner.ObjectsCount + _cubeSpawner.GetPoolCountAll()}";
     }
 }
